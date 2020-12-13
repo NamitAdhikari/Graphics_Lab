@@ -24,6 +24,7 @@ if choiceTransform == 1:
     
     tx, ty, tz = [int(x) for x in input("Enter tx, ty and tz: ").split()]
 
+    # translation
     for s, e in combinations(np.array(list(product(d,d,d))), 2):
         if np.sum(np.abs(s-e)) == d[1]-d[0]:
             s_rotated = [s[0] + tx, 
@@ -37,24 +38,56 @@ if choiceTransform == 1:
 
 elif choiceTransform == 2:
     
+    # rotation
     angle = float(input("Enter angle to rotate: "))
-
+    choice = input("Enter axis to rotate on: ")
     theta = np.radians(angle)
 
-    for s, e in combinations(np.array(list(product(d,d,d))), 2):
-        if np.sum(np.abs(s-e)) == d[1]-d[0]:
-            s_rotated = [s[0] * cos(theta) - s[1] * sin(theta), 
-                        s[0] * sin(theta) + s[1] * cos(theta),
-                        s[2]]
-            e_rotated = [e[0] * cos(theta) - e[1] * sin(theta), 
-                        e[0] * sin(theta) + e[1] * cos(theta),
-                        e[2]]      
-            ax.plot3D(*zip(s_rotated,e_rotated), color="r")
+    if choice in list(['x', 'X']):
+        # rotation about x-axis
+        for s, e in combinations(np.array(list(product(d,d,d))), 2):
+            if np.sum(np.abs(s-e)) == d[1]-d[0]:
+                s_rotated = [
+                            s[2] ,
+                            s[0] * cos(theta) - s[1] * sin(theta),
+                            s[0]* sin(theta) + s[1] * cos(theta)]
+                e_rotated = [ 
+                            e[2] ,
+                            e[0] * cos(theta) - e[1] * sin(theta),
+                            e[0]* sin(theta) + e[1] * cos(theta)]
+                        
+                ax.plot3D(*zip(s_rotated,e_rotated), color="r")
+
+    elif choice in list(['y', 'Y']):
+        # rotation about y-axis
+        for s, e in combinations(np.array(list(product(d,d,d))), 2):
+            if np.sum(np.abs(s-e)) == d[1]-d[0]:
+                s_rotated = [s[0] * cos(theta) + s[1] * sin(theta), 
+                            s[2] ,
+                            -s[0]* sin(theta) + s[1] * cos(theta)]
+                e_rotated = [e[0] * cos(theta) + e[1] * sin(theta), 
+                            e[2],
+                            -e[0] * sin(theta) + e[1] * cos(theta),
+                            ]      
+                ax.plot3D(*zip(s_rotated,e_rotated), color="r")
+
+    elif choice in list(['z', 'Z']):
+        # rotation about z-axis
+        for s, e in combinations(np.array(list(product(d,d,d))), 2):
+            if np.sum(np.abs(s-e)) == d[1]-d[0]:
+                s_rotated = [s[0] * cos(theta) - s[1] * sin(theta), 
+                            s[0] * sin(theta) + s[1] * cos(theta),
+                            s[2]]
+                e_rotated = [e[0] * cos(theta) - e[1] * sin(theta), 
+                            e[0] * sin(theta) + e[1] * cos(theta),
+                            e[2]]      
+                ax.plot3D(*zip(s_rotated,e_rotated), color="r")
 
 elif choiceTransform == 3:
     
     sx, sy, sz = [int(x) for x in input("Enter scaling factors Sx, Sy and Sz: ").split()]
 
+    # scaling
     for s, e in combinations(np.array(list(product(d,d,d))), 2):
         if np.sum(np.abs(s-e)) == d[1]-d[0]:
             s_rotated = [s[0] * sx, 
